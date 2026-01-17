@@ -23,14 +23,26 @@ A modern Flutter CRUD application with dual storage options: Firebase Firestore 
 
 ---
 
-## 📸 Screenshots & Demo
+## 📸 Screenshots
 
 <p align="center">
-  <img src="lib/screenshot/demo1.png" width="180"/>
-  <img src="lib/screenshot/demo2.png" width="180"/>
-  <img src="lib/screenshot/demo3.png" width="180"/>
-  <img src="lib/screenshot/demo4.png" width="180"/>
-  <img src="lib/screenshot/demo5.png" width="180"/>
+  <img src="lib/screenshot/demo1.png" width="250"/>
+  <img src="lib/screenshot/demo2.png" width="250"/>
+  <img src="lib/screenshot/demo3.png" width="250"/>
+  <img src="lib/screenshot/demo4.png" width="250"/>
+  <img src="lib/screenshot/demo5.png" width="250"/>
+</p>
+
+## 📸 Demo
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=00m6A6SYCfU ">
+    <img src="https://img.youtube.com/vi/00m6A6SYCfU /maxresdefault.jpg" alt="Watch Demo" width="600"/>
+  </a>
+</p>
+
+<p align="center">
+  <em>👆 Click to watch demo on YouTube</em>
 </p>
 
 ---
@@ -140,3 +152,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ### 👨‍💻 Developer
 Sidqi Raafi Al Fauzan |
 Teknik Informatika - Universitas Teknologi Bandung
+
