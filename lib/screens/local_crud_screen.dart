@@ -26,7 +26,6 @@ class _LocalCrudScreenState extends State<LocalCrudScreen> {
     super.dispose();
   }
 
-  // CREATE & UPDATE
   void _showItemDialog({int? key}) {
     if (key != null) {
       final item = _itemsBox.get(key);
@@ -40,23 +39,45 @@ class _LocalCrudScreenState extends State<LocalCrudScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(key == null ? 'Add Item' : 'Edit Item'),
+        backgroundColor: const Color.fromARGB(255, 40, 40, 40),
+        title: Text(
+          key == null ? 'Add Item' : 'Edit Item',
+          style: const TextStyle(color: Colors.white),
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: _titleController,
-              decoration: const InputDecoration(
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
                 labelText: 'Title',
-                border: OutlineInputBorder(),
+                labelStyle: const TextStyle(color: Colors.grey),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.blue),
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _descController,
-              decoration: const InputDecoration(
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
                 labelText: 'Description',
-                border: OutlineInputBorder(),
+                labelStyle: const TextStyle(color: Colors.grey),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.blue),
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
               maxLines: 3,
             ),
@@ -65,13 +86,19 @@ class _LocalCrudScreenState extends State<LocalCrudScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(color: Colors.grey),
+            ),
           ),
           ElevatedButton(
             onPressed: () {
               if (_titleController.text.isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Title cannot be empty')),
+                  const SnackBar(
+                    content: Text('Title cannot be empty'),
+                    backgroundColor: Colors.red,
+                  ),
                 );
                 return;
               }
@@ -83,16 +110,18 @@ class _LocalCrudScreenState extends State<LocalCrudScreen> {
               };
 
               if (key == null) {
-                // CREATE
                 _itemsBox.add(data);
               } else {
-                // UPDATE
                 _itemsBox.put(key, data);
               }
 
               Navigator.pop(context);
               setState(() {});
             },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
+            ),
             child: Text(key == null ? 'Add' : 'Update'),
           ),
         ],
@@ -100,17 +129,26 @@ class _LocalCrudScreenState extends State<LocalCrudScreen> {
     );
   }
 
-  // DELETE
   void _deleteItem(int key) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete Item'),
-        content: const Text('Are you sure you want to delete this item?'),
+        backgroundColor: const Color.fromARGB(255, 40, 40, 40),
+        title: const Text(
+          'Delete Item',
+          style: TextStyle(color: Colors.white),
+        ),
+        content: const Text(
+          'Are you sure you want to delete this item?',
+          style: TextStyle(color: Colors.white70),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(color: Colors.grey),
+            ),
           ),
           ElevatedButton(
             onPressed: () {
@@ -120,6 +158,7 @@ class _LocalCrudScreenState extends State<LocalCrudScreen> {
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
             ),
             child: const Text('Delete'),
           ),
@@ -131,10 +170,18 @@ class _LocalCrudScreenState extends State<LocalCrudScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black12,
       appBar: AppBar(
         title: const Text('Local Storage CRUD'),
-        backgroundColor: Colors.blue,
+        centerTitle: true,
+        titleTextStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 20,
+          color: Colors.blue,
+        ),
+        backgroundColor: Colors.black12,
         foregroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: _itemsBox.isEmpty
           ? const Center(
@@ -152,19 +199,38 @@ class _LocalCrudScreenState extends State<LocalCrudScreen> {
               ),
             )
           : ListView.builder(
+              padding: const EdgeInsets.all(12),
               itemCount: _itemsBox.length,
               itemBuilder: (context, index) {
                 final key = _itemsBox.keys.toList()[index];
                 final item = _itemsBox.get(key);
 
                 return Card(
-                  margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  color: const Color.fromARGB(136, 167, 167, 167),
+                  margin: const EdgeInsets.only(bottom: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   child: ListTile(
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
                     title: Text(
                       item['title'],
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
                     ),
-                    subtitle: Text(item['description']),
+                    subtitle: Padding(
+                      padding: const EdgeInsets.only(top: 4),
+                      child: Text(
+                        item['description'],
+                        style: const TextStyle(color: Colors.white70),
+                      ),
+                    ),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -185,6 +251,7 @@ class _LocalCrudScreenState extends State<LocalCrudScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showItemDialog(),
         backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
         child: const Icon(Icons.add),
       ),
     );

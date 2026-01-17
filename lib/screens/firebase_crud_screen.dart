@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../models/item_model.dart';
-import '../../services/firestore_service.dart';
+import '../models/item_model.dart';
+import '../services/firestore_service.dart';
 
 class FirebaseCrudScreen extends StatefulWidget {
   const FirebaseCrudScreen({super.key});
@@ -21,7 +21,6 @@ class _FirebaseCrudScreenState extends State<FirebaseCrudScreen> {
     super.dispose();
   }
 
-  // Show dialog untuk Add/Edit
   void _showItemDialog({Item? item}) {
     if (item != null) {
       _titleController.text = item.title;
@@ -34,23 +33,45 @@ class _FirebaseCrudScreenState extends State<FirebaseCrudScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(item == null ? 'Add Item' : 'Edit Item'),
+        backgroundColor: const Color.fromARGB(255, 40, 40, 40),
+        title: Text(
+          item == null ? 'Add Item' : 'Edit Item',
+          style: const TextStyle(color: Colors.white),
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: _titleController,
-              decoration: const InputDecoration(
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
                 labelText: 'Title',
-                border: OutlineInputBorder(),
+                labelStyle: const TextStyle(color: Colors.grey),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.orange),
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _descController,
-              decoration: const InputDecoration(
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
                 labelText: 'Description',
-                border: OutlineInputBorder(),
+                labelStyle: const TextStyle(color: Colors.grey),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.orange),
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
               maxLines: 3,
             ),
@@ -59,26 +80,30 @@ class _FirebaseCrudScreenState extends State<FirebaseCrudScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(color: Colors.grey),
+            ),
           ),
           ElevatedButton(
             onPressed: () {
               if (_titleController.text.isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Title cannot be empty')),
+                  const SnackBar(
+                    content: Text('Title cannot be empty'),
+                    backgroundColor: Colors.red,
+                  ),
                 );
                 return;
               }
 
               if (item == null) {
-                // CREATE
                 _firestoreService.addItem(Item(
                   title: _titleController.text,
                   description: _descController.text,
                   createdAt: DateTime.now(),
                 ));
               } else {
-                // UPDATE
                 _firestoreService.updateItem(
                   item.id,
                   Item(
@@ -91,6 +116,10 @@ class _FirebaseCrudScreenState extends State<FirebaseCrudScreen> {
               }
               Navigator.pop(context);
             },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.orange,
+              foregroundColor: Colors.black,
+            ),
             child: Text(item == null ? 'Add' : 'Update'),
           ),
         ],
@@ -101,22 +130,35 @@ class _FirebaseCrudScreenState extends State<FirebaseCrudScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black12,
       appBar: AppBar(
         title: const Text('Firebase CRUD'),
-        backgroundColor: Colors.orange,
+        centerTitle: true,
+        titleTextStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 20,
+          color: Colors.orange,
+        ),
+        backgroundColor: Colors.black12,
         foregroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: StreamBuilder<List<Item>>(
         stream: _firestoreService.getItems(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(
-              child: Text('Error: ${snapshot.error}'),
+              child: Text(
+                'Error: ${snapshot.error}',
+                style: const TextStyle(color: Colors.red),
+              ),
             );
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+              child: CircularProgressIndicator(color: Colors.orange),
+            );
           }
 
           List<Item> items = snapshot.data ?? [];
@@ -139,22 +181,41 @@ class _FirebaseCrudScreenState extends State<FirebaseCrudScreen> {
           }
 
           return ListView.builder(
+            padding: const EdgeInsets.all(12),
             itemCount: items.length,
             itemBuilder: (context, index) {
               Item item = items[index];
               return Card(
-                margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                color: const Color.fromARGB(136, 167, 167, 167),
+                margin: const EdgeInsets.only(bottom: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                   title: Text(
                     item.title,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
                   ),
-                  subtitle: Text(item.description),
+                  subtitle: Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Text(
+                      item.description,
+                      style: const TextStyle(color: Colors.white70),
+                    ),
+                  ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.edit, color: Colors.blue),
+                        icon: const Icon(Icons.edit, color: Colors.orange),
                         onPressed: () => _showItemDialog(item: item),
                       ),
                       IconButton(
@@ -163,14 +224,22 @@ class _FirebaseCrudScreenState extends State<FirebaseCrudScreen> {
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: const Text('Delete Item'),
+                              backgroundColor: const Color.fromARGB(255, 40, 40, 40),
+                              title: const Text(
+                                'Delete Item',
+                                style: TextStyle(color: Colors.white),
+                              ),
                               content: const Text(
                                 'Are you sure you want to delete this item?',
+                                style: TextStyle(color: Colors.white70),
                               ),
                               actions: [
                                 TextButton(
                                   onPressed: () => Navigator.pop(context),
-                                  child: const Text('Cancel'),
+                                  child: const Text(
+                                    'Cancel',
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
                                 ),
                                 ElevatedButton(
                                   onPressed: () {
@@ -179,6 +248,7 @@ class _FirebaseCrudScreenState extends State<FirebaseCrudScreen> {
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.red,
+                                    foregroundColor: Colors.white,
                                   ),
                                   child: const Text('Delete'),
                                 ),
@@ -198,6 +268,7 @@ class _FirebaseCrudScreenState extends State<FirebaseCrudScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showItemDialog(),
         backgroundColor: Colors.orange,
+        foregroundColor: Colors.black,
         child: const Icon(Icons.add),
       ),
     );

@@ -12,7 +12,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   
-  // Initialize Hive
+  // Initialize Hive (Local Storage)
   await Hive.initFlutter();
   await Hive.openBox('items_box');
   

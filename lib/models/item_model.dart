@@ -13,7 +13,7 @@ class Item {
     required this.createdAt,
   });
 
-  // Convert Firestore document to Item
+  // Convert Firestore ke Item app
   factory Item.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data() as Map;
     return Item(
@@ -24,7 +24,7 @@ class Item {
     );
   }
 
-  // Convert Item to Map for Firestore
+  // Convert Item untuk dimasukan ke Firestore
   Map<String, dynamic> toMap() {
     return {
       'title': title,

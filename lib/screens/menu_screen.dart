@@ -8,24 +8,30 @@ class MenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black12,
       appBar: AppBar(
-        title: const Text('CRUD Storage Options'),
+        title: const Text('CRUD Storage Testing'),
         centerTitle: true,
-        backgroundColor: Colors.deepPurple,
+        titleTextStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 24,
+          color: Colors.white,
+        ),
+        backgroundColor: Colors.black12,
         foregroundColor: Colors.white,
       ),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.fromLTRB(24, 84, 24, 24),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               // App Icon
               const Icon(
                 Icons.data_object,
                 size: 100,
-                color: Colors.deepPurple,
+                color: Colors.orange,
               ),
               const SizedBox(height: 20),
               const Text(
@@ -33,6 +39,7 @@ class MenuScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 24,
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -55,7 +62,7 @@ class MenuScreen extends StatelessWidget {
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.orange,
-                  foregroundColor: Colors.white,
+                  foregroundColor: const Color.fromARGB(255, 0, 0, 0),
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -114,11 +121,11 @@ class MenuScreen extends StatelessWidget {
               
               // Info Box
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
+                  color: const Color.fromRGBO(167, 167, 167, 0.533),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.grey.shade300),
+                  border: Border.all(color: Color.fromRGBO(167, 167, 167, 0.533)),
                 ),
                 child: const Column(
                   children: [
@@ -128,8 +135,8 @@ class MenuScreen extends StatelessWidget {
                         SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            'Firebase: Cloud-based storage with realtime sync',
-                            style: TextStyle(fontSize: 13),
+                            'Firebase: Cloud-based storage',
+                            style: TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.bold),
                           ),
                         ),
                       ],
@@ -142,7 +149,7 @@ class MenuScreen extends StatelessWidget {
                         Expanded(
                           child: Text(
                             'Local: Device-only storage using Hive DB',
-                            style: TextStyle(fontSize: 13),
+                            style: TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.bold),
                           ),
                         ),
                       ],
